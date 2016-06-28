@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../neon-animation/neon-animatable-behaviour.html">
 
 <!--
 This element can be used for general purpose login boxes (identification
@@ -18,7 +19,6 @@ and password).
 <polymer-element name="login-box" attributes="heading identification">
 
   <template>
-    <script type="text/javascript" src="web-animations.js"></script>
     <link rel="stylesheet" href="login-box.css" />
     <h2>{{heading}}</h2>
     <content select="[top]"></content>
@@ -31,52 +31,86 @@ and password).
   </template>
 
   <script>
+  (function() {
+    'use strict';
 
-    Polymer('login-box', {
-      /**
-       * The `heading` attribute sets an initial heading
-       * 
-       * @attribute heading
-       * @type string
-       * @default 'Login'
-       */
-      heading: 'Login',
+    Polymer({
+      is: 'login-box',
+      behaviors: [
+        Polymer.NeonAnimatableBehaviour
+      ],
 
-      /**
-       * The `submit` attribute sets an initial submit
-       * 
-       * @attribute submit
-       * @type string
-       * @default 'Login'
-       */
-      submit: 'Login',
+      properties:{
+        /**
+         * The `heading` attribute sets an initial heading
+         *
+         * @attribute heading
+         * @type string
+         * @default 'Login'
+         */
+        heading: {
+          type: String,
+          value: 'Login'
+        },
 
-      /**
-       * The `identification` attribute sets an initial identification.
-       * 
-       * @attribute identification
-       * @type string
-       * @default 'Username'
-       */
-      identification: 'Username',
+        /**
+         * The `submit` attribute sets an initial submit
+         *
+         * @attribute submit
+         * @type string
+         * @default 'Login'
+         */
+        submit: {
+          type: String,
+          value: 'Login'
+        },
 
-      /**
-       * The `identifier` attribute sets an initial identifier.
-       * 
-       * @attribute identifier
-       * @type string
-       * @default ''
-       */
-      identifier: "",
+        /**
+         * The `identification` attribute sets an initial identification.
+         *
+         * @attribute identification
+         * @type string
+         * @default 'Username'
+         */
+        identification: {
+          type: String,
+          value: 'Username'
+        },
 
-      /**
-       * The `password` attribute sets an initial password.
-       * 
-       * @attribute password
-       * @type string
-       * @default ''
-       */      
-      password: "",
+        /**
+         * The `identifier` attribute sets an initial identifier.
+         *
+         * @attribute identifier
+         * @type string
+         * @default ''
+         */
+         identifier: {
+           type: String,
+           value: ''
+         }
+
+        /**
+         * The `password` attribute sets an initial password.
+         *
+         * @attribute password
+         * @type string
+         * @default ''
+         */
+        password: {
+          type: String,
+          value: ''
+        }
+        animationConfig: {
+          value: function() {
+            return {
+              // provided by neon-animation/animations/scale-down-animation.html
+              name: 'shake-animation',
+              node: this,
+              timing:{duration: 50}
+            }
+          }
+        }
+      },
 
       validate: function() {
         this.$.identifierInput.invalid = !!!this.identifier;
@@ -87,14 +121,13 @@ and password).
 
       /**
        * The `shake` method will shake this element (negative behaviour).
-       * 
+       *
        * @method shake
        */
       shake: function() {
-        var animation = new Animation(this, [
-            {transform: "translateX(-10px)"},
-            {transform: "translateX(10px)"}
-          ], {
+        this.playAnimation();
+
+        var animation = new Animation(this, , {
             direction: "alternate", duration: 50, iterations: 3
           });
         document.timeline.play(animation);
@@ -103,7 +136,7 @@ and password).
       /**
        * The `login-box-login-try` event is fired whenever we
        * call fireLoginTry
-       * 
+       *
        * @event login-box-login-try
        * @param {Object} detail
        *   @param {string} detail.identifier The identifying value (e.g. username)
@@ -112,7 +145,7 @@ and password).
 
       /**
        * The `fireLoginTry` method will fire the login try event.
-       * 
+       *
        * @method fireLoginTry
        */
       fireLoginTry: function() {
@@ -123,7 +156,7 @@ and password).
       }
 
     });
-
+  })();
   </script>
 
 </polymer-element>

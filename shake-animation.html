@@ -1,0 +1,47 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../neon-animation/neon-animation-behavior.html">
+<link rel="import" href="../neon-animation-behavior.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+
+<!--
+`<transform-animation>` animates a custom transform on an element. Use this to animate multiple
+transform properties, or to apply a custom transform value.
+Configuration:
+```
+{
+  name: 'transform-animation',
+  node: <node>,
+  transformOrigin: <transform-origin>,
+  transformFrom: <transform-from-string>,
+  transformTo: <transform-to-string>,
+  timing: <animation-timing>
+}
+```
+-->
+
+<script>
+  Polymer({
+    is: 'shake-animation',
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+    /**
+     * @param {{
+     *   node: !Element,
+     *   timing: (Object|undefined)
+     * }} config
+     */
+    configure: function(config) {
+      var node = config.node;
+      this._effect = new KeyframeEffect(node, [
+        {transform: "translateX(-10px)"},
+        {transform: "translateX(10px)"},
+        {transform: "translateX(-10px)"},
+        {transform: "translateX(10px)"},
+        {transform: "translateX(-10px)"},
+        {transform: "translateX(10px)"}
+      ], this.timingFromConfig(config));
+      return this._effect;
+    }
+  });
+</script>
