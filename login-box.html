@@ -1,7 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../neon-animation/neon-animatable-behaviour.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="shake-animation.html">
 
 <!--
 This element can be used for general purpose login boxes (identification
@@ -16,8 +17,7 @@ and password).
 @status alpha
 @homepage https://github.com/Adracus/login-box
 -->
-<polymer-element name="login-box" attributes="heading identification">
-
+<dom-module id="login-box">
   <template>
     <link rel="stylesheet" href="login-box.css" />
     <h2>{{heading}}</h2>
@@ -26,7 +26,7 @@ and password).
     <paper-input id="identifierInput" value="{{identifier}}" label="{{identification}}"></paper-input>
     <content select="[passwordHeading]"></content>
     <paper-input id="passwordInput" value="{{password}}" label="Password" type="password"></paper-input>
-    <paper-button id="submitbutton" raised on-click="{{validate}}">{{submit}}</paper-button>
+    <paper-button id="submitbutton" raised on-click="validate">{{submit}}</paper-button>
     <content select="[bottom]"></content>
   </template>
 
@@ -37,9 +37,8 @@ and password).
     Polymer({
       is: 'login-box',
       behaviors: [
-        Polymer.NeonAnimatableBehaviour
+        Polymer.NeonAnimationRunnerBehavior
       ],
-
       properties:{
         /**
          * The `heading` attribute sets an initial heading
@@ -87,7 +86,7 @@ and password).
          identifier: {
            type: String,
            value: ''
-         }
+         },
 
         /**
          * The `password` attribute sets an initial password.
@@ -99,14 +98,14 @@ and password).
         password: {
           type: String,
           value: ''
-        }
+        },
         animationConfig: {
           value: function() {
             return {
               // provided by neon-animation/animations/scale-down-animation.html
               name: 'shake-animation',
               node: this,
-              timing:{duration: 50}
+              timing:{duration: 1000}
             }
           }
         }
@@ -126,11 +125,6 @@ and password).
        */
       shake: function() {
         this.playAnimation();
-
-        var animation = new Animation(this, , {
-            direction: "alternate", duration: 50, iterations: 3
-          });
-        document.timeline.play(animation);
       },
 
       /**
@@ -154,9 +148,7 @@ and password).
           password: this.password
         });
       }
-
     });
   })();
   </script>
-
-</polymer-element>
+</dom-module>

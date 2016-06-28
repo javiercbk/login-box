@@ -17,6 +17,7 @@
     "polymer-test-tools": "Polymer/polymer-test-tools#~0.4.x",
     "paper-input": "^1.1.14",
     "paper-button": "^1.0.12",
-    "neon-elements": "^1.0.0"
+    "neon-elements": "^1.0.0",
+    "neon-animation": "^1.2.3"
   }
 }
