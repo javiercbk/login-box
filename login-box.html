@@ -20,13 +20,14 @@ and password).
 <dom-module id="login-box">
   <template>
     <link rel="stylesheet" href="login-box.css" />
+    <content select="[head]"></content>
     <h2>{{heading}}</h2>
     <content select="[top]"></content>
     <content select="[identifierHeading]"></content>
-    <paper-input id="identifierInput" value="{{identifier}}" label="{{identification}}"></paper-input>
+    <paper-input id="identifierInput" on-keypress="_keyPressed" value="{{identifier}}" label="{{identification}}"></paper-input>
     <content select="[passwordHeading]"></content>
-    <paper-input id="passwordInput" value="{{password}}" label="Password" type="password"></paper-input>
-    <paper-button id="submitbutton" raised on-click="validate">{{submit}}</paper-button>
+    <paper-input id="passwordInput" value="{{password}}" on-keypress="_keyPressed" label="Password" type="password"></paper-input>
+    <paper-button id="submitbutton" raised on-tap="validate">{{submit}}</paper-button>
     <content select="[bottom]"></content>
   </template>
 
@@ -111,6 +112,14 @@ and password).
         }
       },
 
+      focus: function(){
+        if(this.identifier.length === 0){
+          this.$.identifierInput.focus();
+        }else{
+          this.$.passwordInput.focus();
+        }
+      },
+
       validate: function() {
         this.$.identifierInput.invalid = !!!this.identifier;
         this.$.passwordInput.invalid = !!!this.password;
@@ -147,6 +156,12 @@ and password).
           identifier: this.identifier,
           password: this.password
         });
+      },
+
+      _keyPressed: function(e) {
+        if (13 === e.charCode) {
+          this.validate();
+        }
       }
     });
   })();
